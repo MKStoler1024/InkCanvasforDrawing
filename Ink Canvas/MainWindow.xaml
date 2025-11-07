@@ -9,7 +9,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern"
     Name="window"
-    Title="Ink Canvas Artistry 画板"
+    Title="InkCanvasforDrawing 画板"
     Width="1440"
     Height="5500"
     AllowsTransparency="True"
@@ -119,7 +119,7 @@
         <Grid Name="GridBackgroundCoverHolder">
             <Grid
                 Name="GridBackgroundCover"
-                Background="#1F1F1F"
+                Background="#0f261e"
                 Visibility="Collapsed" />
         </Grid>
         <!--  // 画板 //  -->
@@ -4678,7 +4678,7 @@
                                     FontSize="26"
                                     FontWeight="Bold"
                                     Foreground="{DynamicResource SettingsPageForeground}"
-                                    Text="关于 Ink Canvas Artistry" />
+                                    Text="关于 InkCanvasforDrawing" />
                             </GroupBox.Header>
                             <ikw:SimpleStackPanel Spacing="5">
                                 <ikw:SimpleStackPanel Orientation="Horizontal">

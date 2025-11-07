@@ -85,7 +85,7 @@ namespace Ink_Canvas.Helpers
             }
         }
 
-        private static string updatesFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Ink Canvas Artistry", "AutoUpdate");
+        private static string updatesFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "InkCanvasforDrawing", "AutoUpdate");
         private static string statusFilePath = null;
 
         public static async Task<bool> DownloadSetupFileAndSaveStatus(string version)

@@ -5,11 +5,11 @@ using System.Windows;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Ink Canvas Artistry")]
+[assembly: AssemblyTitle("InkCanvasforDrawing")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Ink Canvas Artistry")]
+[assembly: AssemblyProduct("InkCanvasforDrawing")]
 [assembly: AssemblyCopyright("Copyright © XY Wang 2023 & Chang Wu 2024")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

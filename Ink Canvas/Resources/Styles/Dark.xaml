@@ -9,7 +9,7 @@
     <SolidColorBrush x:Key="SettingsPageForeground" Color="White" />
     <SolidColorBrush x:Key="SettingsPageAnnotationForeground" Opacity="0.7" Color="White" />
     <SolidColorBrush x:Key="SettingsPageBorderBrush" Opacity="0.8" Color="White" />
-    <SolidColorBrush x:Key="SettingsPageBackground" Opacity="0.95" Color="#1f1f1f" />
+    <SolidColorBrush x:Key="SettingsPageBackground" Opacity="0.95" Color="#0f261e" />
 
     <SolidColorBrush x:Key="RedBrush" Color="IndianRed" />
     <SolidColorBrush x:Key="PurpleBrush" Color="MediumPurple" />
