@@ -22,8 +22,6 @@ namespace Ink_Canvas
         public Startup Startup { get; set; } = new Startup();
         [JsonProperty("randSettings")]
         public RandSettings RandSettings { get; set; } = new RandSettings();
-        [JsonProperty("isWindowNoActivate")]  
-        public bool IsWindowNoActivate { get; set; } = true; // 修改默认值为true
     }
 
     public class Canvas

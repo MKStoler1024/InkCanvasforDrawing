@@ -3099,30 +3099,6 @@
                                     Text="启动选项" />
                             </GroupBox.Header>
                             <ikw:SimpleStackPanel Spacing="5">
-                                <!--  添加无焦点模式开关  -->
-                                <ikw:SimpleStackPanel Orientation="Horizontal">
-                                    <ikw:SimpleStackPanel Width="50">
-                                        <ui:FontIcon
-                                            Width="20"
-                                            Height="20"
-                                            FontFamily="{StaticResource FluentIconFontFamily}"
-                                            FontSize="20"
-                                            Foreground="{DynamicResource SettingsPageForeground}"
-                                            Glyph="&#xe7c4;" />
-                                    </ikw:SimpleStackPanel>
-                                    <ui:ToggleSwitch
-                                        Name="ToggleSwitchIsWindowNoActivate"
-                                        Header="无焦点模式"
-                                        IsOn="{Binding Source={x:Static Properties:Settings.Default}, Path=IsWindowNoActivate}"
-                                        OffContent="关闭"
-                                        OnContent="开启"
-                                        Toggled="ToggleSwitchIsWindowNoActivate_Toggled" />
-                                </ikw:SimpleStackPanel>
-                                <TextBlock
-                                    Margin="50,0,0,5"
-                                    Foreground="{DynamicResource SettingsPageAnnotationForeground}"
-                                    Text="# 启用无焦点模式后，窗口将不会获得焦点，不会影响其他程序的操作。需要重启软件后生效。"
-                                    TextWrapping="Wrap" />
                                 <ikw:SimpleStackPanel Orientation="Horizontal">
                                     <ikw:SimpleStackPanel Width="50">
                                         <ui:ToggleSwitch

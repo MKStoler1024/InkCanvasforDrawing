@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Ink;
+using System.Windows.Interop;
 using System.Windows.Media;
 using File = System.IO.File;
 using MessageBox = System.Windows.MessageBox;
@@ -217,7 +218,7 @@ namespace Ink_Canvas
 
         private void Window_SourceInitialized(object sender, EventArgs e)
         {
-            if (Settings.IsWindowNoActivate)
+            if (true)
             {
                 var handle = new WindowInteropHelper(this).Handle;
                 var exstyle = GetWindowLong(handle, GWL_EXSTYLE);
