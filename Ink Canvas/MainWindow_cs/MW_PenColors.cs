@@ -122,7 +122,8 @@ namespace Ink_Canvas
                     }
                     else
                     {
-                        GridBackgroundCover.Background = new SolidColorBrush(StringToColor("#FF1F1F1F"));
+                        // 修改：将原来的 "#FF1F1F1F" 替换为目标暗色 "#FF0F261E"
+                        GridBackgroundCover.Background = new SolidColorBrush(StringToColor("#FF0F261E"));
                         isUselightThemeColor = true;
                     }
                 }
