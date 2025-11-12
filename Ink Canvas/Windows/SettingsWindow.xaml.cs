@@ -698,6 +698,27 @@ namespace Ink_Canvas
             MainWindow.SaveSettingsToFile();
         }
 
+        private void SideControlMinimumAutomationSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (!isLoaded) return;
+            MainWindow.Settings.Automation.MinimumAutomationStrokeNumber = (int)e.NewValue;
+            MainWindow.SaveSettingsToFile();
+        }
+
+        private void AutoSavedStrokesLocationTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (!isLoaded) return;
+            MainWindow.Settings.Automation.AutoSavedStrokesLocation = AutoSavedStrokesLocation.Text;
+            MainWindow.SaveSettingsToFile();
+        }
+
+        private void ToggleSwitchAutoDelSavedFiles_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (!isLoaded) return;
+            MainWindow.Settings.Automation.AutoDelSavedFiles = ToggleSwitchAutoDelSavedFiles.IsOn;
+            MainWindow.SaveSettingsToFile();
+        }
+
         private void ComboBoxAutoDelSavedFilesDaysThreshold_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (!isLoaded) return;
