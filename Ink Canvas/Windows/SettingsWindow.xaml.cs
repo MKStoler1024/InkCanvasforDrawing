@@ -526,189 +526,52 @@ namespace Ink_Canvas
             MainWindow.SaveSettingsToFile();
         }
 
-        // Automation Events
-        private void ToggleSwitchAutoFoldInEasiNote_Toggled(object sender, RoutedEventArgs e)
+        #region 高级选项 - 触摸倍数计算
+
+        private void BorderCalculateMultiplier_TouchDown(object sender, TouchEventArgs e)
         {
-            if (!isLoaded) return;
-            MainWindow.Settings.Automation.IsAutoFoldInEasiNote = ToggleSwitchAutoFoldInEasiNote.IsOn;
-            MainWindow.SaveSettingsToFile();
+            var args = e.GetTouchPoint(null).Bounds;
+            double value;
+            if (!MainWindow.Settings.Advanced.IsQuadIR) 
+                value = args.Width;
+            else 
+                value = Math.Sqrt(args.Width * args.Height); // 四边红外
+            TextBlockShowCalculatedMultiplier.Text = (5 / (value * 1.1)).ToString();
         }
 
-        private void ToggleSwitchAutoFoldInEasiNoteIgnoreDesktopAnno_Toggled(object sender, RoutedEventArgs e)
+        private void ToggleSwitchIsEnableEdgeGestureUtil_Toggled(object sender, RoutedEventArgs e)
         {
             if (!isLoaded) return;
-            MainWindow.Settings.Automation.IsAutoFoldInEasiNoteIgnoreDesktopAnno = ToggleSwitchAutoFoldInEasiNoteIgnoreDesktopAnno.IsOn;
-            MainWindow.SaveSettingsToFile();
-        }
-
-        private void ToggleSwitchAutoFoldInEasiCamera_Toggled(object sender, RoutedEventArgs e)
-        {
-            if (!isLoaded) return;
-            MainWindow.Settings.Automation.IsAutoFoldInEasiCamera = ToggleSwitchAutoFoldInEasiCamera.IsOn;
-            MainWindow.SaveSettingsToFile();
-        }
-
-        private void ToggleSwitchAutoFoldInEasiNote3C_Toggled(object sender, RoutedEventArgs e)
-        {
-            if (!isLoaded) return;
-            MainWindow.Settings.Automation.IsAutoFoldInEasiNote3C = ToggleSwitchAutoFoldInEasiNote3C.IsOn;
-            MainWindow.SaveSettingsToFile();
-        }
-
-        private void ToggleSwitchAutoFoldInSeewoPincoTeacher_Toggled(object sender, RoutedEventArgs e)
-        {
-            if (!isLoaded) return;
-            MainWindow.Settings.Automation.IsAutoFoldInSeewoPincoTeacher = ToggleSwitchAutoFoldInSeewoPincoTeacher.IsOn;
-            MainWindow.SaveSettingsToFile();
-        }
-
-        private void ToggleSwitchAutoFoldInHiteTouchPro_Toggled(object sender, RoutedEventArgs e)
-        {
-            if (!isLoaded) return;
-            MainWindow.Settings.Automation.IsAutoFoldInHiteTouchPro = ToggleSwitchAutoFoldInHiteTouchPro.IsOn;
-            MainWindow.SaveSettingsToFile();
-        }
-
-        private void ToggleSwitchAutoFoldInHiteCamera_Toggled(object sender, RoutedEventArgs e)
-        {
-            if (!isLoaded) return;
-            MainWindow.Settings.Automation.IsAutoFoldInHiteCamera = ToggleSwitchAutoFoldInHiteCamera.IsOn;
-            MainWindow.SaveSettingsToFile();
-        }
-
-        private void ToggleSwitchAutoFoldInWxBoardMain_Toggled(object sender, RoutedEventArgs e)
-        {
-            if (!isLoaded) return;
-            MainWindow.Settings.Automation.IsAutoFoldInWxBoardMain = ToggleSwitchAutoFoldInWxBoardMain.IsOn;
-            MainWindow.SaveSettingsToFile();
-        }
-
-        private void ToggleSwitchAutoFoldInOldZyBoard_Toggled(object sender, RoutedEventArgs e)
-        {
-            if (!isLoaded) return;
-            MainWindow.Settings.Automation.IsAutoFoldInOldZyBoard = ToggleSwitchAutoFoldInOldZyBoard.IsOn;
-            MainWindow.SaveSettingsToFile();
-        }
-
-        private void ToggleSwitchAutoFoldInMSWhiteboard_Toggled(object sender, RoutedEventArgs e)
-        {
-            if (!isLoaded) return;
-            MainWindow.Settings.Automation.IsAutoFoldInMSWhiteboard = ToggleSwitchAutoFoldInMSWhiteboard.IsOn;
-            MainWindow.SaveSettingsToFile();
-        }
-
-        private void ToggleSwitchAutoFoldInPPTSlideShow_Toggled(object sender, RoutedEventArgs e)
-        {
-            if (!isLoaded) return;
-            MainWindow.Settings.Automation.IsAutoFoldInPPTSlideShow = ToggleSwitchAutoFoldInPPTSlideShow.IsOn;
-            MainWindow.SaveSettingsToFile();
-        }
-
-        private void ToggleSwitchAutoKillPptService_Toggled(object sender, RoutedEventArgs e)
-        {
-            if (!isLoaded) return;
-            MainWindow.Settings.Automation.IsAutoKillPptService = ToggleSwitchAutoKillPptService.IsOn;
-            MainWindow.SaveSettingsToFile();
-        }
-
-        private void ToggleSwitchAutoKillEasiNote_Toggled(object sender, RoutedEventArgs e)
-        {
-            if (!isLoaded) return;
-            MainWindow.Settings.Automation.IsAutoKillEasiNote = ToggleSwitchAutoKillEasiNote.IsOn;
-            MainWindow.SaveSettingsToFile();
-        }
-
-        private void ToggleSwitchAutoSaveStrokesAtClear_Toggled(object sender, RoutedEventArgs e)
-        {
-            if (!isLoaded) return;
-            MainWindow.Settings.Automation.IsAutoSaveStrokesAtClear = ToggleSwitchAutoSaveStrokesAtClear.IsOn;
-            MainWindow.SaveSettingsToFile();
-        }
-
-        private void ToggleSwitchSaveScreenshotsInDateFolders_Toggled(object sender, RoutedEventArgs e)
-        {
-            if (!isLoaded) return;
-            MainWindow.Settings.Automation.IsSaveScreenshotsInDateFolders = ToggleSwitchSaveScreenshotsInDateFolders.IsOn;
-            MainWindow.SaveSettingsToFile();
-        }
-
-        private void ToggleSwitchAutoSaveStrokesAtScreenshot_Toggled(object sender, RoutedEventArgs e)
-        {
-            if (!isLoaded) return;
-            MainWindow.Settings.Automation.IsAutoSaveStrokesAtScreenshot = ToggleSwitchAutoSaveStrokesAtScreenshot.IsOn;
-            MainWindow.SaveSettingsToFile();
-        }
-
-        private void SideControlMinimumAutomationSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            if (!isLoaded) return;
-            MainWindow.Settings.Automation.MinimumAutomationStrokeNumber = (int)e.NewValue;
-            MainWindow.SaveSettingsToFile();
-        }
-
-        private void AutoSavedStrokesLocationTextBox_TextChanged(object sender, RoutedEventArgs e)
-        {
-            if (!isLoaded) return;
-            MainWindow.Settings.Automation.AutoSavedStrokesLocation = AutoSavedStrokesLocation.Text;
-            MainWindow.SaveSettingsToFile();
-        }
-
-        private void ToggleSwitchAutoDelSavedFiles_Toggled(object sender, RoutedEventArgs e)
-        {
-            if (!isLoaded) return;
-            MainWindow.Settings.Automation.AutoDelSavedFiles = ToggleSwitchAutoDelSavedFiles.IsOn;
-            MainWindow.SaveSettingsToFile();
-        }
-
-        private void ComboBoxAutoDelSavedFilesDaysThreshold_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (!isLoaded) return;
-            int days = ComboBoxAutoDelSavedFilesDaysThreshold.SelectedIndex;
-            if (days == 0) MainWindow.Settings.Automation.AutoDelSavedFilesDaysThreshold = 1;
-            else if (days == 1) MainWindow.Settings.Automation.AutoDelSavedFilesDaysThreshold = 3;
-            else if (days == 2) MainWindow.Settings.Automation.AutoDelSavedFilesDaysThreshold = 5;
-            else if (days == 3) MainWindow.Settings.Automation.AutoDelSavedFilesDaysThreshold = 7;
-            else if (days == 4) MainWindow.Settings.Automation.AutoDelSavedFilesDaysThreshold = 15;
-            else if (days == 5) MainWindow.Settings.Automation.AutoDelSavedFilesDaysThreshold = 30;
-            else if (days == 6) MainWindow.Settings.Automation.AutoDelSavedFilesDaysThreshold = 60;
-            else if (days == 7) MainWindow.Settings.Automation.AutoDelSavedFilesDaysThreshold = 100;
-            else if (days == 8) MainWindow.Settings.Automation.AutoDelSavedFilesDaysThreshold = 365;
+            MainWindow.Settings.Advanced.IsEnableEdgeGestureUtil = ToggleSwitchIsEnableEdgeGestureUtil.IsOn;
             MainWindow.SaveSettingsToFile();
         }
 
         #endregion
 
-        #region 关闭和链接按钮
+        #region 自动选项 - 保存位置
 
-        private void BtnRestart_Click(object sender, RoutedEventArgs e)
+        private void AutoSavedStrokesLocationButton_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start(System.Windows.Forms.Application.ExecutablePath, "-m");
-            MainWindow.CloseIsFromButton = true;
-            Application.Current.Shutdown();
+            System.Windows.Forms.FolderBrowserDialog folderBrowser = new System.Windows.Forms.FolderBrowserDialog();
+            if (folderBrowser.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                AutoSavedStrokesLocation.Text = folderBrowser.SelectedPath;
+            }
         }
 
-        private void BtnResetToSuggestion_Click(object sender, RoutedEventArgs e)
+        private void SetAutoSavedStrokesLocationToDiskDButton_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow.SetSettingsToRecommendation();
-            MainWindow.SaveSettingsToFile();
-            LoadSettings();
+            AutoSavedStrokesLocation.Text = @"D:\Ink Canvas";
         }
 
-        private void BtnExit_Click(object sender, RoutedEventArgs e)
+        private void SetAutoSavedStrokesLocationToDocumentFolderButton_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow.CloseIsFromButton = true;
-            Application.Current.Shutdown();
+            AutoSavedStrokesLocation.Text = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Ink Canvas";
         }
 
-        private void BtnClose_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
-        }
+        #endregion
 
-        private void SCManipulationBoundaryFeedback(object sender, ManipulationBoundaryFeedbackEventArgs e)
-        {
-            e.Handled = true;
-        }
+        #region 链接和窗口控制
 
         private void HyperlinkSourceToPresentRepository_Click(object sender, RoutedEventArgs e)
         {
@@ -721,5 +584,10 @@ namespace Ink_Canvas
         }
 
         #endregion
+
+        private void SCManipulationBoundaryFeedback(object sender, ManipulationBoundaryFeedbackEventArgs e)
+        {
+            e.Handled = true;
+        }
     }
 }
