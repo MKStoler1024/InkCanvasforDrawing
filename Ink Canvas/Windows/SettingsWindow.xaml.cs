@@ -585,9 +585,179 @@ namespace Ink_Canvas
 
         #endregion
 
+        // Automation Events
+        private void ToggleSwitchAutoFoldInEasiNote_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (!isLoaded) return;
+            MainWindow.Settings.Automation.IsAutoFoldInEasiNote = ToggleSwitchAutoFoldInEasiNote.IsOn;
+            MainWindow.SaveSettingsToFile();
+        }
+
+        private void ToggleSwitchAutoFoldInEasiNoteIgnoreDesktopAnno_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (!isLoaded) return;
+            MainWindow.Settings.Automation.IsAutoFoldInEasiNoteIgnoreDesktopAnno = ToggleSwitchAutoFoldInEasiNoteIgnoreDesktopAnno.IsOn;
+            MainWindow.SaveSettingsToFile();
+        }
+
+        private void ToggleSwitchAutoFoldInEasiCamera_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (!isLoaded) return;
+            MainWindow.Settings.Automation.IsAutoFoldInEasiCamera = ToggleSwitchAutoFoldInEasiCamera.IsOn;
+            MainWindow.SaveSettingsToFile();
+        }
+
+        private void ToggleSwitchAutoFoldInEasiNote3C_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (!isLoaded) return;
+            MainWindow.Settings.Automation.IsAutoFoldInEasiNote3C = ToggleSwitchAutoFoldInEasiNote3C.IsOn;
+            MainWindow.SaveSettingsToFile();
+        }
+
+        private void ToggleSwitchAutoFoldInSeewoPincoTeacher_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (!isLoaded) return;
+            MainWindow.Settings.Automation.IsAutoFoldInSeewoPincoTeacher = ToggleSwitchAutoFoldInSeewoPincoTeacher.IsOn;
+            MainWindow.SaveSettingsToFile();
+        }
+
+        private void ToggleSwitchAutoFoldInHiteTouchPro_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (!isLoaded) return;
+            MainWindow.Settings.Automation.IsAutoFoldInHiteTouchPro = ToggleSwitchAutoFoldInHiteTouchPro.IsOn;
+            MainWindow.SaveSettingsToFile();
+        }
+
+        private void ToggleSwitchAutoFoldInHiteCamera_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (!isLoaded) return;
+            MainWindow.Settings.Automation.IsAutoFoldInHiteCamera = ToggleSwitchAutoFoldInHiteCamera.IsOn;
+            MainWindow.SaveSettingsToFile();
+        }
+
+        private void ToggleSwitchAutoFoldInWxBoardMain_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (!isLoaded) return;
+            MainWindow.Settings.Automation.IsAutoFoldInWxBoardMain = ToggleSwitchAutoFoldInWxBoardMain.IsOn;
+            MainWindow.SaveSettingsToFile();
+        }
+
+        private void ToggleSwitchAutoFoldInOldZyBoard_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (!isLoaded) return;
+            MainWindow.Settings.Automation.IsAutoFoldInOldZyBoard = ToggleSwitchAutoFoldInOldZyBoard.IsOn;
+            MainWindow.SaveSettingsToFile();
+        }
+
+        private void ToggleSwitchAutoFoldInMSWhiteboard_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (!isLoaded) return;
+            MainWindow.Settings.Automation.IsAutoFoldInMSWhiteboard = ToggleSwitchAutoFoldInMSWhiteboard.IsOn;
+            MainWindow.SaveSettingsToFile();
+        }
+
+        private void ToggleSwitchAutoFoldInPPTSlideShow_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (!isLoaded) return;
+            MainWindow.Settings.Automation.IsAutoFoldInPPTSlideShow = ToggleSwitchAutoFoldInPPTSlideShow.IsOn;
+            MainWindow.SaveSettingsToFile();
+        }
+
+        private void ToggleSwitchAutoKillPptService_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (!isLoaded) return;
+            MainWindow.Settings.Automation.IsAutoKillPptService = ToggleSwitchAutoKillPptService.IsOn;
+            MainWindow.SaveSettingsToFile();
+        }
+
+        private void ToggleSwitchAutoKillEasiNote_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (!isLoaded) return;
+            MainWindow.Settings.Automation.IsAutoKillEasiNote = ToggleSwitchAutoKillEasiNote.IsOn;
+            MainWindow.SaveSettingsToFile();
+        }
+
+        private void ToggleSwitchAutoSaveStrokesAtClear_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (!isLoaded) return;
+            MainWindow.Settings.Automation.IsAutoSaveStrokesAtClear = ToggleSwitchAutoSaveStrokesAtClear.IsOn;
+            MainWindow.SaveSettingsToFile();
+        }
+
+        private void ToggleSwitchSaveScreenshotsInDateFolders_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (!isLoaded) return;
+            MainWindow.Settings.Automation.IsSaveScreenshotsInDateFolders = ToggleSwitchSaveScreenshotsInDateFolders.IsOn;
+            MainWindow.SaveSettingsToFile();
+        }
+
+        private void ToggleSwitchAutoSaveStrokesAtScreenshot_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (!isLoaded) return;
+            MainWindow.Settings.Automation.IsAutoSaveStrokesAtScreenshot = ToggleSwitchAutoSaveStrokesAtScreenshot.IsOn;
+            MainWindow.SaveSettingsToFile();
+        }
+
+        private void ComboBoxAutoDelSavedFilesDaysThreshold_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (!isLoaded) return;
+            int days = ComboBoxAutoDelSavedFilesDaysThreshold.SelectedIndex;
+            if (days == 0) MainWindow.Settings.Automation.AutoDelSavedFilesDaysThreshold = 1;
+            else if (days == 1) MainWindow.Settings.Automation.AutoDelSavedFilesDaysThreshold = 3;
+            else if (days == 2) MainWindow.Settings.Automation.AutoDelSavedFilesDaysThreshold = 5;
+            else if (days == 3) MainWindow.Settings.Automation.AutoDelSavedFilesDaysThreshold = 7;
+            else if (days == 4) MainWindow.Settings.Automation.AutoDelSavedFilesDaysThreshold = 15;
+            else if (days == 5) MainWindow.Settings.Automation.AutoDelSavedFilesDaysThreshold = 30;
+            else if (days == 6) MainWindow.Settings.Automation.AutoDelSavedFilesDaysThreshold = 60;
+            else if (days == 7) MainWindow.Settings.Automation.AutoDelSavedFilesDaysThreshold = 100;
+            else if (days == 8) MainWindow.Settings.Automation.AutoDelSavedFilesDaysThreshold = 365;
+            MainWindow.SaveSettingsToFile();
+        }
+
+        #endregion
+
+        #region 关闭和链接按钮
+
+        private void BtnRestart_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start(System.Windows.Forms.Application.ExecutablePath, "-m");
+            MainWindow.CloseIsFromButton = true;
+            Application.Current.Shutdown();
+        }
+
+        private void BtnResetToSuggestion_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow.SetSettingsToRecommendation();
+            MainWindow.SaveSettingsToFile();
+            LoadSettings();
+        }
+
+        private void BtnExit_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow.CloseIsFromButton = true;
+            Application.Current.Shutdown();
+        }
+
+        private void BtnClose_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
         private void SCManipulationBoundaryFeedback(object sender, ManipulationBoundaryFeedbackEventArgs e)
         {
             e.Handled = true;
         }
+
+        private void HyperlinkSourceToPresentRepository_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start("https://github.com/InkCanvas/Ink-Canvas-Artistry");
+        }
+
+        private void HyperlinkSourceToOringinalRepository_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start("https://github.com/WXRIW/Ink-Canvas");
+        }
+
+        #endregion
     }
 }
