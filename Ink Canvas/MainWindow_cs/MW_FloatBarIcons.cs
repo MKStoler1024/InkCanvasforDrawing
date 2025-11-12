@@ -287,8 +287,8 @@ namespace Ink_Canvas
 
         private void SymbolIconSettings_Click(object sender, RoutedEventArgs e)
         {
-            HideSubPanels();
-            BtnSettings_Click(null, null);
+            SettingsWindow settingsWindow = new SettingsWindow(this);
+            settingsWindow.ShowDialog();
         }
 
         private void SymbolIconSelect_Click(object sender, RoutedEventArgs e)
@@ -935,14 +935,8 @@ namespace Ink_Canvas
 
         private void BtnSettings_Click(object sender, RoutedEventArgs e)
         {
-            if (BorderSettings.Visibility == Visibility.Visible)
-            {
-                AnimationsHelper.HideWithSlideAndFade(BorderSettings, 0.5);
-            }
-            else
-            {
-                AnimationsHelper.ShowWithSlideFromBottomAndFade(BorderSettings, 0.5);
-            }
+            SettingsWindow settingsWindow = new SettingsWindow(this);
+            settingsWindow.ShowDialog();
         }
 
         bool forceEraser = false;
