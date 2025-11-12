@@ -2,6 +2,7 @@ using Ink_Canvas.Helpers;
 using iNKORE.UI.WPF.Modern;
 using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -167,6 +168,8 @@ namespace Ink_Canvas
 
         public static Settings Settings = new Settings();
         public static string settingsFileName = "Settings.json";
+        public static bool CloseIsFromButton = false;
+        public string AppVersion => Assembly.GetExecutingAssembly().GetName().Version.ToString();
         bool isLoaded = false;
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -182,7 +185,7 @@ namespace Ink_Canvas
             ThemeManager.Current.ApplicationTheme = ApplicationTheme.Light;
             SystemEvents_UserPreferenceChanged(null, null);
 
-            AppVersionTextBlock.Text = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            AppVersionTextBlock.Text = AppVersion;
             LogHelper.WriteLogToFile("Ink Canvas Loaded", LogHelper.LogType.Event);
             isLoaded = true;
             RegisterGlobalHotkeys();
@@ -254,5 +257,15 @@ namespace Ink_Canvas
         #endregion
 
         #endregion Definations and Loading
+
+        #region Settings Button
+        
+        private void BtnSettings_Click(object sender, RoutedEventArgs e)
+        {
+            SettingsWindow settingsWindow = new SettingsWindow(this);
+            settingsWindow.ShowDialog();
+        }
+
+        #endregion
     }
 }

@@ -1,10 +1,8 @@
 using Ink_Canvas.Helpers;
 using iNKORE.UI.WPF.Modern;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows;
-using System.Windows.Input;
 using System.Windows.Controls;
 
 namespace Ink_Canvas
@@ -32,14 +30,10 @@ namespace Ink_Canvas
                 if (mainWindow.GetMainWindowTheme() == "Light")
                 {
                     ThemeManager.SetRequestedTheme(this, ElementTheme.Light);
-                    ResourceDictionary rd = new ResourceDictionary() { Source = new Uri("Resources/Styles/Light-PopupWindow.xaml", UriKind.Relative) };
-                    Application.Current.Resources.MergedDictionaries.Add(rd);
                 }
                 else
                 {
                     ThemeManager.SetRequestedTheme(this, ElementTheme.Dark);
-                    ResourceDictionary rd = new ResourceDictionary() { Source = new Uri("Resources/Styles/Dark-PopupWindow.xaml", UriKind.Relative) };
-                    Application.Current.Resources.MergedDictionaries.Add(rd);
                 }
             }
         }
@@ -49,10 +43,9 @@ namespace Ink_Canvas
             // 启动选项
             ToggleSwitchIsAutoUpdate.IsOn = MainWindow.Settings.Startup.IsAutoUpdate;
             ToggleSwitchIsAutoUpdateWithSilence.IsOn = MainWindow.Settings.Startup.IsAutoUpdateWithSilence;
-            ToggleSwitchRunAtStartup.IsOn = MainWindow.Settings.Startup.IsEnableNibMode;
             ToggleSwitchFoldAtStartup.IsOn = MainWindow.Settings.Startup.IsFoldAtStartup;
 
-            // 初始化自动更新时间段ComboBox
+            // 初始化自动更新时间段
             InitializeTimeComboBoxes();
             if (MainWindow.Settings.Startup.AutoUpdateWithSilenceStartTime != null)
                 AutoUpdateWithSilenceStartTimeComboBox.SelectedItem = MainWindow.Settings.Startup.AutoUpdateWithSilenceStartTime;
@@ -67,7 +60,7 @@ namespace Ink_Canvas
             ComboBoxHyperbolaAsymptoteOption.SelectedIndex = (int)MainWindow.Settings.Canvas.HyperbolaAsymptoteOption;
 
             // 手势选项
-            ComboBoxMatrixTransformCenterPoint.SelectedIndex = 0; // 默认值
+            ComboBoxMatrixTransformCenterPoint.SelectedIndex = (int)MainWindow.Settings.Gesture.MatrixTransformCenterPoint;
             ToggleSwitchAutoSwitchTwoFingerGesture.IsOn = MainWindow.Settings.Gesture.AutoSwitchTwoFingerGesture;
             ToggleSwitchEnableTwoFingerRotationOnSelection.IsOn = MainWindow.Settings.Gesture.IsEnableTwoFingerRotationOnSelection;
 
@@ -103,7 +96,7 @@ namespace Ink_Canvas
             ToggleSwitchIsSpecialScreen.IsOn = MainWindow.Settings.Advanced.IsSpecialScreen;
             ToggleSwitchIsLogEnabled.IsOn = MainWindow.Settings.Advanced.IsLogEnabled;
             ToggleSwitchIsSecondConfimeWhenShutdownApp.IsOn = MainWindow.Settings.Advanced.IsSecondConfimeWhenShutdownApp;
-            ToggleSwitchIsQuadIR.IsOn = MainWindow.Settings.Advanced.IsSpecialScreen;
+            ToggleSwitchIsQuadIR.IsOn = MainWindow.Settings.Advanced.IsQuadIR;
             TouchMultiplierSlider.Value = MainWindow.Settings.Advanced.TouchMultiplier;
             NibModeBoundsWidthSlider.Value = MainWindow.Settings.Advanced.NibModeBoundsWidth;
             FingerModeBoundsWidthSlider.Value = MainWindow.Settings.Advanced.FingerModeBoundsWidth;
@@ -131,6 +124,7 @@ namespace Ink_Canvas
             ToggleSwitchAutoSaveStrokesAtScreenshot.IsOn = MainWindow.Settings.Automation.IsAutoSaveStrokesAtScreenshot;
             SideControlMinimumAutomationSlider.Value = MainWindow.Settings.Automation.MinimumAutomationStrokeNumber;
             AutoSavedStrokesLocation.Text = MainWindow.Settings.Automation.AutoSavedStrokesLocation;
+            ToggleSwitchAutoDelSavedFiles.IsOn = MainWindow.Settings.Automation.AutoDelSavedFiles;
             ComboBoxAutoDelSavedFilesDaysThreshold.SelectedIndex = GetComboBoxIndexByDaysThreshold(MainWindow.Settings.Automation.AutoDelSavedFilesDaysThreshold);
         }
 
@@ -157,13 +151,13 @@ namespace Ink_Canvas
             return 4;
         }
 
-        #region 启动选项事件
+        #region 所有事件处理
 
+        // Startup Events
         private void ToggleSwitchIsAutoUpdate_Toggled(object sender, RoutedEventArgs e)
         {
             if (!isLoaded) return;
             MainWindow.Settings.Startup.IsAutoUpdate = ToggleSwitchIsAutoUpdate.IsOn;
-            IsAutoUpdateWithSilenceBlock.Visibility = ToggleSwitchIsAutoUpdate.IsOn ? Visibility.Visible : Visibility.Collapsed;
             MainWindow.SaveSettingsToFile();
         }
 
@@ -171,21 +165,22 @@ namespace Ink_Canvas
         {
             if (!isLoaded) return;
             MainWindow.Settings.Startup.IsAutoUpdateWithSilence = ToggleSwitchIsAutoUpdateWithSilence.IsOn;
-            AutoUpdateTimePeriodBlock.Visibility = MainWindow.Settings.Startup.IsAutoUpdateWithSilence ? Visibility.Visible : Visibility.Collapsed;
             MainWindow.SaveSettingsToFile();
         }
 
         private void AutoUpdateWithSilenceStartTimeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (!isLoaded) return;
-            MainWindow.Settings.Startup.AutoUpdateWithSilenceStartTime = (string)AutoUpdateWithSilenceStartTimeComboBox.SelectedItem;
+            if (AutoUpdateWithSilenceStartTimeComboBox.SelectedItem != null)
+                MainWindow.Settings.Startup.AutoUpdateWithSilenceStartTime = (string)AutoUpdateWithSilenceStartTimeComboBox.SelectedItem;
             MainWindow.SaveSettingsToFile();
         }
 
         private void AutoUpdateWithSilenceEndTimeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (!isLoaded) return;
-            MainWindow.Settings.Startup.AutoUpdateWithSilenceEndTime = (string)AutoUpdateWithSilenceEndTimeComboBox.SelectedItem;
+            if (AutoUpdateWithSilenceEndTimeComboBox.SelectedItem != null)
+                MainWindow.Settings.Startup.AutoUpdateWithSilenceEndTime = (string)AutoUpdateWithSilenceEndTimeComboBox.SelectedItem;
             MainWindow.SaveSettingsToFile();
         }
 
@@ -213,9 +208,13 @@ namespace Ink_Canvas
             MainWindow.SaveSettingsToFile();
         }
 
-        #endregion
-
-        #region 画板选项事件
+        // Canvas Events
+        private void ComboBoxEraserSize_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (!isLoaded) return;
+            MainWindow.Settings.Canvas.EraserSize = ComboBoxEraserSize.SelectedIndex;
+            MainWindow.SaveSettingsToFile();
+        }
 
         private void ToggleSwitchCompressPicturesUploaded_Toggled(object sender, RoutedEventArgs e)
         {
@@ -228,13 +227,6 @@ namespace Ink_Canvas
         {
             if (!isLoaded) return;
             MainWindow.Settings.Canvas.IsShowCursor = ToggleSwitchShowCursor.IsOn;
-            MainWindow.SaveSettingsToFile();
-        }
-
-        private void ComboBoxEraserSize_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (!isLoaded) return;
-            MainWindow.Settings.Canvas.EraserSize = ComboBoxEraserSize.SelectedIndex;
             MainWindow.SaveSettingsToFile();
         }
 
@@ -252,14 +244,11 @@ namespace Ink_Canvas
             MainWindow.SaveSettingsToFile();
         }
 
-        #endregion
-
-        #region 手势选项事件
-
+        // Gesture Events
         private void ComboBoxMatrixTransformCenterPoint_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (!isLoaded) return;
-            MainWindow.Settings.Gesture.MatrixTransformCenterPointIndex = ComboBoxMatrixTransformCenterPoint.SelectedIndex;
+            MainWindow.Settings.Gesture.MatrixTransformCenterPoint = (MatrixTransformCenterPointOptions)ComboBoxMatrixTransformCenterPoint.SelectedIndex;
             MainWindow.SaveSettingsToFile();
         }
 
@@ -277,10 +266,7 @@ namespace Ink_Canvas
             MainWindow.SaveSettingsToFile();
         }
 
-        #endregion
-
-        #region 墨迹识别事件
-
+        // InkToShape Events
         private void ToggleSwitchEnableInkToShape_Toggled(object sender, RoutedEventArgs e)
         {
             if (!isLoaded) return;
@@ -288,15 +274,11 @@ namespace Ink_Canvas
             MainWindow.SaveSettingsToFile();
         }
 
-        #endregion
-
-        #region 外观选项事件
-
+        // Appearance Events
         private void ComboBoxTheme_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (!isLoaded) return;
             MainWindow.Settings.Appearance.Theme = ComboBoxTheme.SelectedIndex;
-            mainWindow.SystemEvents_UserPreferenceChanged(null, null);
             MainWindow.SaveSettingsToFile();
         }
 
@@ -305,7 +287,6 @@ namespace Ink_Canvas
             if (!isLoaded) return;
             MainWindow.Settings.Appearance.IsEnableDisPlayFloatBarText = ToggleSwitchEnableDisPlayFloatBarText.IsOn;
             MainWindow.SaveSettingsToFile();
-            mainWindow.LoadSettings();
         }
 
         private void ToggleSwitchEnableDisPlayNibModeToggle_Toggled(object sender, RoutedEventArgs e)
@@ -313,7 +294,6 @@ namespace Ink_Canvas
             if (!isLoaded) return;
             MainWindow.Settings.Appearance.IsEnableDisPlayNibModeToggler = ToggleSwitchEnableDisPlayNibModeToggle.IsOn;
             MainWindow.SaveSettingsToFile();
-            mainWindow.LoadSettings();
         }
 
         private void ToggleSwitchIsColorfulViewboxFloatingBar_Toggled(object sender, RoutedEventArgs e)
@@ -321,14 +301,12 @@ namespace Ink_Canvas
             if (!isLoaded) return;
             MainWindow.Settings.Appearance.IsColorfulViewboxFloatingBar = ToggleSwitchColorfulViewboxFloatingBar.IsOn;
             MainWindow.SaveSettingsToFile();
-            mainWindow.LoadSettings();
         }
 
         private void SliderFloatingBarBottomMargin_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if (!isLoaded) return;
             MainWindow.Settings.Appearance.FloatingBarBottomMargin = e.NewValue;
-            mainWindow.ViewboxFloatingBarMarginAnimation();
             MainWindow.SaveSettingsToFile();
         }
 
@@ -336,7 +314,6 @@ namespace Ink_Canvas
         {
             if (!isLoaded) return;
             MainWindow.Settings.Appearance.FloatingBarScale = e.NewValue;
-            mainWindow.ApplyScaling();
             MainWindow.SaveSettingsToFile();
         }
 
@@ -344,7 +321,6 @@ namespace Ink_Canvas
         {
             if (!isLoaded) return;
             MainWindow.Settings.Appearance.BlackboardScale = e.NewValue;
-            mainWindow.ApplyScaling();
             MainWindow.SaveSettingsToFile();
         }
 
@@ -372,10 +348,7 @@ namespace Ink_Canvas
             }
         }
 
-        #endregion
-
-        #region PPT 选项事件
-
+        // PPT Events
         private void ToggleSwitchShowPPTNavigationPanelBottom_OnToggled(object sender, RoutedEventArgs e)
         {
             if (!isLoaded) return;
@@ -474,10 +447,7 @@ namespace Ink_Canvas
             MainWindow.SaveSettingsToFile();
         }
 
-        #endregion
-
-        #region 高级选项事件
-
+        // Advanced Events
         private void ToggleSwitchIsSpecialScreen_OnToggled(object sender, RoutedEventArgs e)
         {
             if (!isLoaded) return;
@@ -495,14 +465,14 @@ namespace Ink_Canvas
         private void NibModeBoundsWidthSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if (!isLoaded) return;
-            MainWindow.Settings.Advanced.NibModeBoundsWidth = e.NewValue;
+            MainWindow.Settings.Advanced.NibModeBoundsWidth = (int)e.NewValue;
             MainWindow.SaveSettingsToFile();
         }
 
         private void FingerModeBoundsWidthSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if (!isLoaded) return;
-            MainWindow.Settings.Advanced.FingerModeBoundsWidth = e.NewValue;
+            MainWindow.Settings.Advanced.FingerModeBoundsWidth = (int)e.NewValue;
             MainWindow.SaveSettingsToFile();
         }
 
@@ -534,6 +504,13 @@ namespace Ink_Canvas
             MainWindow.SaveSettingsToFile();
         }
 
+        private void ToggleSwitchIsQuadIR_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (!isLoaded) return;
+            MainWindow.Settings.Advanced.IsQuadIR = ToggleSwitchIsQuadIR.IsOn;
+            MainWindow.SaveSettingsToFile();
+        }
+
         private void ToggleSwitchIsLogEnabled_Toggled(object sender, RoutedEventArgs e)
         {
             if (!isLoaded) return;
@@ -548,30 +525,7 @@ namespace Ink_Canvas
             MainWindow.SaveSettingsToFile();
         }
 
-        private void ToggleSwitchIsQuadIR_Toggled(object sender, RoutedEventArgs e)
-        {
-            if (!isLoaded) return;
-            MainWindow.Settings.Advanced.IsSpecialScreen = ToggleSwitchIsQuadIR.IsOn;
-            MainWindow.SaveSettingsToFile();
-        }
-
-        private void ToggleSwitchIsEnableEdgeGestureUtil_Toggled(object sender, RoutedEventArgs e)
-        {
-            if (!isLoaded) return;
-            MainWindow.Settings.Advanced.IsEnableEdgeGestureUtil = ToggleSwitchIsEnableEdgeGestureUtil.IsOn;
-            MainWindow.SaveSettingsToFile();
-        }
-
-        private void BorderCalculateMultiplier_TouchDown(object sender, TouchEventArgs e)
-        {
-            // 计算触摸倍数逻辑
-            mainWindow.BorderCalculateMultiplier_TouchDown(sender, e);
-        }
-
-        #endregion
-
-        #region 自动选项事件
-
+        // Automation Events
         private void ToggleSwitchAutoFoldInEasiNote_Toggled(object sender, RoutedEventArgs e)
         {
             if (!isLoaded) return;
@@ -684,13 +638,6 @@ namespace Ink_Canvas
             MainWindow.SaveSettingsToFile();
         }
 
-        private void ToggleSwitchAutoDelSavedFiles_Toggled(object sender, RoutedEventArgs e)
-        {
-            if (!isLoaded) return;
-            MainWindow.Settings.Automation.IsAutoDelSavedFiles = ToggleSwitchAutoDelSavedFiles.IsOn;
-            MainWindow.SaveSettingsToFile();
-        }
-
         private void SideControlMinimumAutomationSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if (!isLoaded) return;
@@ -698,63 +645,39 @@ namespace Ink_Canvas
             MainWindow.SaveSettingsToFile();
         }
 
-        private void AutoSavedStrokesLocationTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void AutoSavedStrokesLocationTextBox_TextChanged(object sender, RoutedEventArgs e)
         {
             if (!isLoaded) return;
             MainWindow.Settings.Automation.AutoSavedStrokesLocation = AutoSavedStrokesLocation.Text;
             MainWindow.SaveSettingsToFile();
         }
 
-        private void AutoSavedStrokesLocationButton_Click(object sender, RoutedEventArgs e)
+        private void ToggleSwitchAutoDelSavedFiles_Toggled(object sender, RoutedEventArgs e)
         {
-            mainWindow.AutoSavedStrokesLocationButton_Click(sender, e);
-        }
-
-        private void SetAutoSavedStrokesLocationToDiskDButton_Click(object sender, RoutedEventArgs e)
-        {
-            mainWindow.SetAutoSavedStrokesLocationToDiskDButton_Click(sender, e);
-            AutoSavedStrokesLocation.Text = MainWindow.Settings.Automation.AutoSavedStrokesLocation;
-        }
-
-        private void SetAutoSavedStrokesLocationToDocumentFolderButton_Click(object sender, RoutedEventArgs e)
-        {
-            mainWindow.SetAutoSavedStrokesLocationToDocumentFolderButton_Click(sender, e);
-            AutoSavedStrokesLocation.Text = MainWindow.Settings.Automation.AutoSavedStrokesLocation;
+            if (!isLoaded) return;
+            MainWindow.Settings.Automation.AutoDelSavedFiles = ToggleSwitchAutoDelSavedFiles.IsOn;
+            MainWindow.SaveSettingsToFile();
         }
 
         private void ComboBoxAutoDelSavedFilesDaysThreshold_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (!isLoaded) return;
-            int days = ComboBoxAutoDelSavedFilesDaysThreshold.SelectedIndex switch
-            {
-                0 => 1,
-                1 => 3,
-                2 => 5,
-                3 => 7,
-                4 => 15,
-                5 => 30,
-                6 => 60,
-                7 => 100,
-                8 => 365,
-                _ => 15
-            };
-            MainWindow.Settings.Automation.AutoDelSavedFilesDaysThreshold = days;
+            int days = ComboBoxAutoDelSavedFilesDaysThreshold.SelectedIndex;
+            if (days == 0) MainWindow.Settings.Automation.AutoDelSavedFilesDaysThreshold = 1;
+            else if (days == 1) MainWindow.Settings.Automation.AutoDelSavedFilesDaysThreshold = 3;
+            else if (days == 2) MainWindow.Settings.Automation.AutoDelSavedFilesDaysThreshold = 5;
+            else if (days == 3) MainWindow.Settings.Automation.AutoDelSavedFilesDaysThreshold = 7;
+            else if (days == 4) MainWindow.Settings.Automation.AutoDelSavedFilesDaysThreshold = 15;
+            else if (days == 5) MainWindow.Settings.Automation.AutoDelSavedFilesDaysThreshold = 30;
+            else if (days == 6) MainWindow.Settings.Automation.AutoDelSavedFilesDaysThreshold = 60;
+            else if (days == 7) MainWindow.Settings.Automation.AutoDelSavedFilesDaysThreshold = 100;
+            else if (days == 8) MainWindow.Settings.Automation.AutoDelSavedFilesDaysThreshold = 365;
             MainWindow.SaveSettingsToFile();
         }
 
         #endregion
 
-        #region 关于及其他事件
-
-        private void HyperlinkSourceToPresentRepository_Click(object sender, RoutedEventArgs e)
-        {
-            mainWindow.HyperlinkSourceToPresentRepository_Click(sender, e);
-        }
-
-        private void HyperlinkSourceToOringinalRepository_Click(object sender, RoutedEventArgs e)
-        {
-            mainWindow.HyperlinkSourceToOringinalRepository_Click(sender, e);
-        }
+        #region 关闭和链接按钮
 
         private void BtnRestart_Click(object sender, RoutedEventArgs e)
         {
@@ -765,7 +688,8 @@ namespace Ink_Canvas
 
         private void BtnResetToSuggestion_Click(object sender, RoutedEventArgs e)
         {
-            mainWindow.BtnResetToSuggestion_Click(null, null);
+            MainWindow.SetSettingsToRecommendation();
+            MainWindow.SaveSettingsToFile();
             LoadSettings();
         }
 
@@ -783,6 +707,16 @@ namespace Ink_Canvas
         private void SCManipulationBoundaryFeedback(object sender, ManipulationBoundaryFeedbackEventArgs e)
         {
             e.Handled = true;
+        }
+
+        private void HyperlinkSourceToPresentRepository_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start("https://github.com/InkCanvas/Ink-Canvas-Artistry");
+        }
+
+        private void HyperlinkSourceToOringinalRepository_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start("https://github.com/WXRIW/Ink-Canvas");
         }
 
         #endregion
