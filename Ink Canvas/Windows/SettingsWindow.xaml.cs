@@ -748,16 +748,6 @@ namespace Ink_Canvas
             e.Handled = true;
         }
 
-        private void HyperlinkSourceToPresentRepository_Click(object sender, RoutedEventArgs e)
-        {
-            Process.Start("https://github.com/InkCanvas/Ink-Canvas-Artistry");
-        }
-
-        private void HyperlinkSourceToOringinalRepository_Click(object sender, RoutedEventArgs e)
-        {
-            Process.Start("https://github.com/WXRIW/Ink-Canvas");
-        }
-
         #endregion
     }
 }
