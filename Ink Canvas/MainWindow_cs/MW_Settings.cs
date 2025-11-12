@@ -928,5 +928,35 @@ namespace Ink_Canvas
             Process.Start("https://github.com/WXRIW/Ink-Canvas");
             HideSubPanels();
         }
+
+        // 新增：公开包装方法，调用类内已有私有方法以刷新 UI / 重新加载设置
+        public void ReloadSettingsPublic(bool isStartup = false)
+        {
+            // 调用已有的 LoadSettings 方法（同类内，私有方法可被访问）
+            LoadSettings(isStartup);
+        }
+
+        public void ApplyScalingPublic()
+        {
+            ApplyScaling();
+        }
+
+        public void ViewboxFloatingBarMarginAnimationPublic()
+        {
+            ViewboxFloatingBarMarginAnimation();
+        }
+
+        public void RefreshThemePublic()
+        {
+            // 触发主题相关刷新，调用已存在的方法
+            SystemEvents_UserPreferenceChanged(null, null);
+            CheckColorTheme(true);
+        }
+
+        public void RefreshCanvasPublic()
+        {
+            // 使画布相关设置生效（例如光标显示）
+            inkCanvas_EditingModeChanged(inkCanvas, null);
+        }
     }
 }

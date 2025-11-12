@@ -280,21 +280,21 @@ namespace Ink_Canvas
         {
             if (!isLoaded) return;
             MainWindow.Settings.Appearance.Theme = ComboBoxTheme.SelectedIndex;
-            MainWindow.SaveSettingsToFile();
+            SaveAndApply(reloadAll: true); // 主题改动建议完全重载设置
         }
 
         private void ToggleSwitchEnableDisPlayFloatBarText_Toggled(object sender, RoutedEventArgs e)
         {
             if (!isLoaded) return;
             MainWindow.Settings.Appearance.IsEnableDisPlayFloatBarText = ToggleSwitchEnableDisPlayFloatBarText.IsOn;
-            MainWindow.SaveSettingsToFile();
+            SaveAndApply(reloadAll: true);
         }
 
         private void ToggleSwitchEnableDisPlayNibModeToggle_Toggled(object sender, RoutedEventArgs e)
         {
             if (!isLoaded) return;
             MainWindow.Settings.Appearance.IsEnableDisPlayNibModeToggler = ToggleSwitchEnableDisPlayNibModeToggle.IsOn;
-            MainWindow.SaveSettingsToFile();
+            SaveAndApply(reloadAll: true);
         }
 
         private void ToggleSwitchIsColorfulViewboxFloatingBar_Toggled(object sender, RoutedEventArgs e)
@@ -308,21 +308,21 @@ namespace Ink_Canvas
         {
             if (!isLoaded) return;
             MainWindow.Settings.Appearance.FloatingBarBottomMargin = e.NewValue;
-            MainWindow.SaveSettingsToFile();
+            SaveAndApply();
         }
 
         private void SliderFloatingBarScale_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if (!isLoaded) return;
             MainWindow.Settings.Appearance.FloatingBarScale = e.NewValue;
-            MainWindow.SaveSettingsToFile();
+            SaveAndApply();
         }
 
         private void SliderBlackboardScale_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if (!isLoaded) return;
             MainWindow.Settings.Appearance.BlackboardScale = e.NewValue;
-            MainWindow.SaveSettingsToFile();
+            SaveAndApply();
         }
 
         private void BtnSetFloatingBarMargin_Click(object sender, RoutedEventArgs e)
@@ -509,7 +509,7 @@ namespace Ink_Canvas
         {
             if (!isLoaded) return;
             MainWindow.Settings.Advanced.IsQuadIR = ToggleSwitchIsQuadIR.IsOn;
-            MainWindow.SaveSettingsToFile();
+            SaveAndApply();
         }
 
         private void ToggleSwitchIsLogEnabled_Toggled(object sender, RoutedEventArgs e)
@@ -709,14 +709,14 @@ namespace Ink_Canvas
         {
             if (!isLoaded) return;
             MainWindow.Settings.Automation.AutoSavedStrokesLocation = AutoSavedStrokesLocation.Text;
-            MainWindow.SaveSettingsToFile();
+            SaveAndApply();
         }
 
         private void ToggleSwitchAutoDelSavedFiles_Toggled(object sender, RoutedEventArgs e)
         {
             if (!isLoaded) return;
             MainWindow.Settings.Automation.AutoDelSavedFiles = ToggleSwitchAutoDelSavedFiles.IsOn;
-            MainWindow.SaveSettingsToFile();
+            SaveAndApply();
         }
 
         private void ComboBoxAutoDelSavedFilesDaysThreshold_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -732,7 +732,7 @@ namespace Ink_Canvas
             else if (days == 6) MainWindow.Settings.Automation.AutoDelSavedFilesDaysThreshold = 60;
             else if (days == 7) MainWindow.Settings.Automation.AutoDelSavedFilesDaysThreshold = 100;
             else if (days == 8) MainWindow.Settings.Automation.AutoDelSavedFilesDaysThreshold = 365;
-            MainWindow.SaveSettingsToFile();
+            SaveAndApply();
         }
 
         #endregion
@@ -770,5 +770,23 @@ namespace Ink_Canvas
         }
 
         #endregion
+
+        // 新增：统一保存并应用到主窗口
+        private void SaveAndApply(bool reloadAll = false)
+        {
+            MainWindow.SaveSettingsToFile();
+            if (mainWindow != null)
+            {
+                if (reloadAll) mainWindow.ReloadSettingsPublic(false);
+                else
+                {
+                    // 一些局部刷新：主题/缩放/画布 等
+                    mainWindow.ApplyScalingPublic();
+                    mainWindow.ViewboxFloatingBarMarginAnimationPublic();
+                    mainWindow.RefreshThemePublic();
+                    mainWindow.RefreshCanvasPublic();
+                }
+            }
+        }
     }
 }
