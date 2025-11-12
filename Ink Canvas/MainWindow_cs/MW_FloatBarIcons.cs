@@ -918,7 +918,6 @@ namespace Ink_Canvas
 
         #region Right Side Panel
 
-        public static bool CloseIsFromButton = false;
         private void BtnExit_Click(object sender, RoutedEventArgs e)
         {
             CloseIsFromButton = true;
@@ -931,12 +930,6 @@ namespace Ink_Canvas
 
             CloseIsFromButton = true;
             Application.Current.Shutdown();
-        }
-
-        private void BtnSettings_Click(object sender, RoutedEventArgs e)
-        {
-            SettingsWindow settingsWindow = new SettingsWindow(this);
-            settingsWindow.ShowDialog();
         }
 
         bool forceEraser = false;
